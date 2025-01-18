@@ -3,7 +3,7 @@ import logo from "./assets/LOGO.svg";
 import logodark from "./assets/LOGODARK.svg"; // dark mode logo import
 import { IoMoon, IoSunny } from "react-icons/io5";
 
-const BASE_URL = "http://localhost:5000/users"; // JSON server endpoint
+const BASE_URL = "http://localhost:5000"; // Backend base URL
 
 export default function Signup() {
   const [isSwapped, setIsSwapped] = useState(false);
@@ -30,29 +30,25 @@ export default function Signup() {
   };
 
   const handleSignup = async () => {
-    setErrorMessage(""); // Reset error message
+    setErrorMessage("");
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match!");
+      return;
+    }
 
     try {
-      const response = await fetch(BASE_URL);
-      const users = await response.json();
-
-      if (users.some((user) => user.email === email)) {
-        setErrorMessage("This email already exists. Please log in.");
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        setErrorMessage("Passwords do not match!");
-        return;
-      }
-
-      const newUser = { username, email, password };
-
-      await fetch(BASE_URL, {
+      const response = await fetch(`${BASE_URL}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
+        body: JSON.stringify({ username, email, password }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "Signup failed");
+        return;
+      }
 
       setErrorMessage("Signup successful! Please log in.");
       setIsSwapped(false);
@@ -62,22 +58,23 @@ export default function Signup() {
   };
 
   const handleLogin = async () => {
-    setErrorMessage(""); // Reset error message
+    setErrorMessage("");
 
     try {
       const response = await fetch(
-        `${BASE_URL}?email=${email}&password=${password}`
+        `${BASE_URL}/users/login?email=${email}&password=${password}`
       );
-      const user = await response.json();
 
-      if (user.length) {
-        setErrorMessage("Login successful! Redirecting...");
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1500);
-      } else {
-        setErrorMessage("Invalid email or password!");
+      if (!response.ok) {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "Login failed");
+        return;
       }
+
+      setErrorMessage("Login successful! Redirecting...");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
     } catch (error) {
       setErrorMessage("An error occurred during login. Please try again.");
     }

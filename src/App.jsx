@@ -29,7 +29,7 @@ function App() {
             </>
           }
         >
-          <Route index element={<Home />} />
+          <Route index element={<Mainpage />} />
           <Route path="mainpage" element={<Mainpage />} />
           <Route path="courses" element={<Courses />} />
           <Route path="videos" element={<Videos />} />

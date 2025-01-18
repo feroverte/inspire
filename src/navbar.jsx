@@ -7,8 +7,8 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "#about", label: "About" },
-    { href: "#courses", label: "Courses" },
+    { href: "/blog", label: "About" },
+    { href: "/courses", label: "Courses" },
     { href: "#resources", label: "Resources" },
     { href: "#instructors", label: "Instructors" },
   ];
@@ -56,7 +56,7 @@ export default function Navbar() {
           {/* Login Button */}
           <div className="ml-auto">
             <Link
-              to="/login"
+              to="/signup"
               className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 font-medium"
             >
               Log In

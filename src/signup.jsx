@@ -71,10 +71,9 @@ export default function Signup() {
         return;
       }
 
-      setErrorMessage("Login successful! Redirecting...");
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 1500);
+      const user = await response.json(); // Server returns user details
+      localStorage.setItem("user", JSON.stringify(user)); // Save user data locally
+      setErrorMessage("Login successful!");
     } catch (error) {
       setErrorMessage("An error occurred during login. Please try again.");
     }

@@ -10,10 +10,14 @@ import Videos from "./videos";
 import Blog from "./blog";
 import BlogDetail from "./bigdetail";
 import Navbar from "./navbar";
+import Profile from "./profile";
+import Resources from "./resources";
 
 function App() {
   return (
-    <Router>
+    <Router basename="/inspire">
+      {" "}
+      {/* Set the basename */}
       <Routes>
         {/* Routes without Navbar */}
         <Route path="/signup" element={<Signup />} />
@@ -35,6 +39,8 @@ function App() {
           <Route path="videos" element={<Videos />} />
           <Route path="blog" element={<Blog />} />
           <Route path="blog/:id" element={<BlogDetail />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="resources" element={<Resources />} />
         </Route>
       </Routes>
     </Router>

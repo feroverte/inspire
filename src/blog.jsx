@@ -10,7 +10,7 @@ export default function blog() {
       content: "Full content about MBA programs goes here...",
       date: "August 23, 2024",
       author: {
-        name: "Sovet Xanim",
+        name: "Shamil Aliyev",
         role: "Co-Founder",
         image: "/author1.jpg",
       },
@@ -24,7 +24,7 @@ export default function blog() {
       content: "Full content about places to study at Bilgi University...",
       date: "April 24, 2024",
       author: {
-        name: "Murad dalbanov",
+        name: "Islam Abbasov",
         role: "Customer Support",
         image: "/author2.jpg",
       },
@@ -38,7 +38,7 @@ export default function blog() {
       content: "Full content about best places to study in Istanbul...",
       date: "April 4, 2024",
       author: {
-        name: "Farhad lox",
+        name: "Farhad Aliyev",
         role: "Customer Support",
         image: "/author3.jpg",
       },

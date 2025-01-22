@@ -12,6 +12,7 @@ import BlogDetail from "./bigdetail";
 import Navbar from "./navbar";
 import Profile from "./profile";
 import Resources from "./resources";
+import Fag from "./fag";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="blog/:id" element={<BlogDetail />} />
           <Route path="profile" element={<Profile />} />
           <Route path="resources" element={<Resources />} />
+          <Route path="fag" element={<Fag />} />
         </Route>
       </Routes>
     </Router>

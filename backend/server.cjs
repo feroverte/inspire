@@ -1,3 +1,4 @@
+// server.cjs
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -7,72 +8,62 @@ const cors = require("cors");
 const app = express();
 const PORT = 5000;
 const USERS_FILE = path.join(__dirname, "users.json");
+const FAQ_FILE = path.join(__dirname, "fag_comments.json");
 
 // Use cors middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Helper functions to read/write users
-const readUsers = () => {
-  if (!fs.existsSync(USERS_FILE)) {
-    fs.writeFileSync(USERS_FILE, JSON.stringify([]));
+// Helper functions to read/write FAQ data
+const readFaq = () => {
+  if (!fs.existsSync(FAQ_FILE)) {
+    fs.writeFileSync(FAQ_FILE, JSON.stringify([]));
   }
-  return JSON.parse(fs.readFileSync(USERS_FILE, "utf-8"));
+  return JSON.parse(fs.readFileSync(FAQ_FILE, "utf-8"));
 };
 
-const writeUsers = (users) => {
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+const writeFaq = (faq) => {
+  fs.writeFileSync(FAQ_FILE, JSON.stringify(faq, null, 2));
 };
 
-// User registration endpoint
-app.post("/users", (req, res) => {
-  const { username, email, password } = req.body;
-  const users = readUsers();
-
-  if (users.some((user) => user.email === email)) {
-    return res.status(400).json({ message: "Email already exists" });
-  }
-
-  if (users.some((user) => user.username === username)) {
-    return res.status(400).json({ message: "Username already exists" });
-  }
-
-  users.push({ username, email, password });
-  writeUsers(users);
-
-  res.status(201).json({ message: "Signup successful!" });
+// Get all FAQ entries
+app.get("/faq", (req, res) => {
+  const faq = readFaq();
+  res.status(200).json(faq);
 });
 
-// User login endpoint
-app.get("/users/login", (req, res) => {
-  const { email, password } = req.query;
-  const users = readUsers();
-
-  const user = users.find(
-    (user) => user.email === email && user.password === password
-  );
-
-  if (user) {
-    res.status(200).json({
-      username: user.username,
-      email: user.email,
-    });
-  } else {
-    res.status(400).json({ message: "Invalid email or password" });
+// Add a new question
+app.post("/faq/question", (req, res) => {
+  const { username, question } = req.body;
+  if (!username || !question) {
+    return res
+      .status(400)
+      .json({ message: "Username and question are required." });
   }
+
+  const faq = readFaq();
+  faq.push({ username, question, answers: [] });
+  writeFaq(faq);
+  res.status(201).json({ message: "Question added successfully." });
 });
 
-// Get user data endpoint
-app.get("/users/:email", (req, res) => {
-  const { email } = req.params;
-  const users = readUsers();
-
-  const user = users.find((user) => user.email === email);
-  if (user) {
-    res.status(200).json(user);
-  } else {
-    res.status(404).json({ message: "User not found" });
+// Add an answer to a question
+app.post("/faq/answer", (req, res) => {
+  const { questionIndex, answer } = req.body;
+  if (questionIndex === undefined || !answer) {
+    return res
+      .status(400)
+      .json({ message: "Question index and answer are required." });
   }
+
+  const faq = readFaq();
+  if (!faq[questionIndex]) {
+    return res.status(404).json({ message: "Question not found." });
+  }
+
+  faq[questionIndex].answers.push(answer);
+  writeFaq(faq);
+  res.status(201).json({ message: "Answer added successfully." });
 });
 
 // Start the server

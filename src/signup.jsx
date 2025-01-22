@@ -71,9 +71,12 @@ export default function Signup() {
         return;
       }
 
-      const user = await response.json(); // Server returns user details
+      const user = await response.json(); // Adjust your server to return user details
       localStorage.setItem("user", JSON.stringify(user)); // Save user data locally
-      setErrorMessage("Login successful!");
+      setErrorMessage("Login successful! Redirecting...");
+      setTimeout(() => {
+        window.location.href = "/inspire/";
+      }, 1500);
     } catch (error) {
       setErrorMessage("An error occurred during login. Please try again.");
     }

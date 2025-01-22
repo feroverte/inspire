@@ -17,7 +17,7 @@ export default function Navbar() {
     { href: "/resources", label: "About" },
     { href: "/courses", label: "Courses" },
     { href: "/blog", label: "Resources" },
-    { href: "#instructors", label: "Instructors" },
+    { href: "/fag", label: "Fag" },
   ];
 
   return (
@@ -59,7 +59,7 @@ export default function Navbar() {
         <div className="ml-auto">
           <Link
             to="/signup"
-            className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 font-medium"
+            className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 font-medium"
           >
             Log In
           </Link>
